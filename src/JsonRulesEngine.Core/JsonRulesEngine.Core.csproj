@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>JsonRulesEngine</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>JsonRulesEngine Contributors</Authors>
+    <Company>JsonRulesEngine</Company>
+    <Description>A C# port of the json-rules-engine library for evaluating JSON rules against facts.</Description>
+    <PackageTags>rules;engine;json;rules-engine;business-rules</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/yourusername/JsonRulesEngine</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yourusername/JsonRulesEngine</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="7.0.3" />
+  </ItemGroup>
+</Project>

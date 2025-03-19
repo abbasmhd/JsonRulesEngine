@@ -1,0 +1,4 @@
+- name: Quick Start
+  href: quickstart.md
+- name: C4 Model
+  href: c4_model.md

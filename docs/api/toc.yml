@@ -1,0 +1,83 @@
+- name: JsonRulesEngine
+  href: JsonRulesEngine.Core.yml
+- name: JsonRulesEngine.Core
+  href: JsonRulesEngine.Core.yml
+  items:
+  - name: Engine
+    href: JsonRulesEngine.Core.Engine.yml
+  - name: Fact
+    href: JsonRulesEngine.Core.Fact.yml
+  - name: Almanac
+    href: JsonRulesEngine.Core.Almanac.yml
+  - name: JsonPathResolver
+    href: JsonRulesEngine.Core.JsonPathResolver.yml
+  - name: OperatorRegistry
+    href: JsonRulesEngine.Core.OperatorRegistry.yml
+  - name: RulesEngineFactory
+    href: JsonRulesEngine.Core.RulesEngineFactory.yml
+- name: JsonRulesEngine.Core.Models
+  href: JsonRulesEngine.Core.Models.yml
+  items:
+  - name: Rule
+    href: JsonRulesEngine.Core.Models.Rule.yml
+  - name: Condition
+    href: JsonRulesEngine.Core.Models.Condition.yml
+  - name: TopLevelCondition
+    href: JsonRulesEngine.Core.Models.TopLevelCondition.yml
+  - name: Event
+    href: JsonRulesEngine.Core.Models.Event.yml
+  - name: EngineResult
+    href: JsonRulesEngine.Core.Models.EngineResult.yml
+  - name: RuleResult
+    href: JsonRulesEngine.Core.Models.RuleResult.yml
+  - name: FactOptions
+    href: JsonRulesEngine.Core.Models.FactOptions.yml
+  - name: EngineOptions
+    href: JsonRulesEngine.Core.Models.EngineOptions.yml
+  - name: AlmanacOptions
+    href: JsonRulesEngine.Core.Models.AlmanacOptions.yml
+  - name: RunOptions
+    href: JsonRulesEngine.Core.Models.RunOptions.yml
+- name: JsonRulesEngine.Core.Interfaces
+  href: JsonRulesEngine.Core.Interfaces.yml
+  items:
+  - name: IEngine
+    href: JsonRulesEngine.Core.Interfaces.IEngine.yml
+  - name: IAlmanac
+    href: JsonRulesEngine.Core.Interfaces.IAlmanac.yml
+  - name: IPathResolver
+    href: JsonRulesEngine.Core.Interfaces.IPathResolver.yml
+  - name: IOperator
+    href: JsonRulesEngine.Core.Interfaces.IOperator-2.yml
+  - name: IOperatorDecorator
+    href: JsonRulesEngine.Core.Interfaces.IOperatorDecorator-4.yml
+- name: JsonRulesEngine.Core.Operators
+  href: JsonRulesEngine.Core.Operators.yml
+  items:
+  - name: Operator
+    href: JsonRulesEngine.Core.Operators.Operator.yml
+  - name: EqualOperator
+    href: JsonRulesEngine.Core.Operators.EqualOperator.yml
+  - name: NotEqualOperator
+    href: JsonRulesEngine.Core.Operators.NotEqualOperator.yml
+  - name: GreaterThanOperator
+    href: JsonRulesEngine.Core.Operators.GreaterThanOperator.yml
+  - name: GreaterThanOrEqualOperator
+    href: JsonRulesEngine.Core.Operators.GreaterThanOrEqualOperator.yml
+  - name: LessThanOperator
+    href: JsonRulesEngine.Core.Operators.LessThanOperator.yml
+  - name: LessThanOrEqualOperator
+    href: JsonRulesEngine.Core.Operators.LessThanOrEqualOperator.yml
+  - name: InOperator
+    href: JsonRulesEngine.Core.Operators.InOperator.yml
+  - name: NotInOperator
+    href: JsonRulesEngine.Core.Operators.NotInOperator.yml
+  - name: ContainsOperator
+    href: JsonRulesEngine.Core.Operators.ContainsOperator.yml
+  - name: DoesNotContainOperator
+    href: JsonRulesEngine.Core.Operators.DoesNotContainOperator.yml
+- name: JsonRulesEngine.Core.Extensions
+  href: JsonRulesEngine.Core.Extensions.yml
+  items:
+  - name: JsonExtensions
+    href: JsonRulesEngine.Core.Extensions.JsonExtensions.yml
