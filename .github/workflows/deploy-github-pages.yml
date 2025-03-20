@@ -22,9 +22,17 @@ jobs:
         
     - name: Build Documentation
       run: |
+        # Clean up any existing generated files
+        rm -rf docs/_site docs/api
+        
+        # Create API documentation directory
         mkdir -p docs/api
-        docfx init -o docs
-        docfx docs/docfx.json
+        
+        # Generate API documentation
+        docfx metadata docs/docfx.json
+        
+        # Build the documentation site
+        docfx build docs/docfx.json --force
         
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
