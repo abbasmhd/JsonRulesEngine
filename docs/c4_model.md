@@ -4,199 +4,133 @@ This document provides a C4 model representation of the JsonRulesEngine architec
 
 ## Level 1: System Context Diagram
 
-```
-+-------------------+      +-------------------+
-|                   |      |                   |
-|  Client           |      |  External Data    |
-|  Application      +----->+  Sources          |
-|                   |      |                   |
-+--------+----------+      +-------------------+
-         |
-         | Uses
-         v
-+-------------------+
-|                   |
-|  JsonRulesEngine  |
-|                   |
-+-------------------+
+```mermaid
+graph TB
+    Client["Client Application"]
+    JsonRulesEngine["JsonRulesEngine"]
+    ExternalData["External Data Sources"]
+
+    Client -->|Uses| JsonRulesEngine
+    Client -->|Uses| ExternalData
 ```
 
 The JsonRulesEngine is used by client applications to evaluate business rules against data that may come from various sources, including external systems.
 
 ## Level 2: Container Diagram
 
-```
-+-------------------+
-|                   |
-|  Client           |
-|  Application      |
-|                   |
-+--------+----------+
-         |
-         | Uses
-         v
-+-------------------+      +-------------------+
-|                   |      |                   |
-|  JsonRulesEngine  +----->+  External Data    |
-|  NuGet Package    |      |  Sources          |
-|                   |      |                   |
-+-------------------+      +-------------------+
+```mermaid
+graph TB
+    Client["Client Application"]
+    JsonRulesEngine["JsonRulesEngine<br/>NuGet Package"]
+    ExternalData["External Data Sources"]
+
+    Client -->|Uses| JsonRulesEngine
+    JsonRulesEngine -->|Reads| ExternalData
 ```
 
 The JsonRulesEngine is packaged as a NuGet package that can be integrated into .NET applications.
 
 ## Level 3: Component Diagram
 
-```
-+-------------------+
-|                   |
-|  Client           |
-|  Application      |
-|                   |
-+--------+----------+
-         |
-         | Uses
-         v
-+-----------------------------------------------------------+
-|                                                           |
-|  JsonRulesEngine NuGet Package                            |
-|                                                           |
-|  +---------------+      +---------------+      +--------+ |
-|  |               |      |               |      |        | |
-|  |  Engine       +----->+  Rule         +----->+ Event  | |
-|  |               |      |               |      |        | |
-|  +-------+-------+      +-------+-------+      +--------+ |
-|          |                      |                         |
-|          v                      v                         |
-|  +---------------+      +---------------+                 |
-|  |               |      |               |                 |
-|  |  Almanac      +----->+  Condition    |                 |
-|  |               |      |               |                 |
-|  +-------+-------+      +---------------+                 |
-|          |                                                |
-|          v                                                |
-|  +---------------+      +---------------+                 |
-|  |               |      |               |                 |
-|  |  Fact         +----->+  OperatorMap  |                 |
-|  |               |      |               |                 |
-|  +---------------+      +---------------+                 |
-|                                                           |
-+-----------------------------------------------------------+
+```mermaid
+graph TB
+    subgraph JsonRulesEngine["JsonRulesEngine NuGet Package"]
+        Engine["Engine"]
+        Rule["Rule"]
+        Event["Event"]
+        Almanac["Almanac"]
+        Condition["Condition"]
+        Fact["Fact"]
+        OperatorMap["OperatorMap"]
+
+        Engine -->|Uses| Rule
+        Rule -->|Triggers| Event
+        Engine -->|Uses| Almanac
+        Rule -->|Contains| Condition
+        Almanac -->|Manages| Fact
+        Fact -->|Uses| OperatorMap
+    end
+
+    Client["Client Application"]
+    Client -->|Uses| Engine
 ```
 
 ## Level 4: Code Diagram
 
-```
-+------------------------------------------------------------------+
-|                                                                  |
-|  Engine                                                          |
-|                                                                  |
-|  - Rules: List<Rule>                                             |
-|  - Facts: Dictionary<string, Fact>                               |
-|  - OperatorMap: OperatorMap                                      |
-|  - Conditions: Dictionary<string, TopLevelCondition>             |
-|                                                                  |
-|  + AddRule(rule: Rule): void                                     |
-|  + UpdateRule(rule: Rule): void                                  |
-|  + RemoveRule(rule: Rule): bool                                  |
-|  + AddFact(id: string, definitionFunc: Func<...>): void          |
-|  + RemoveFact(id: string): bool                                  |
-|  + AddOperator(name: string, evaluateFunc: Func<...>): void      |
-|  + Run(facts: Dictionary<string, object>): Task<EngineResult>    |
-|                                                                  |
-+------------------+-----------------------------------------------+
-                   |
-                   | Uses
-                   v
-+------------------------------------------------------------------+
-|                                                                  |
-|  Rule                                                            |
-|                                                                  |
-|  - Id: string                                                    |
-|  - Priority: int                                                 |
-|  - Conditions: TopLevelCondition                                 |
-|  - Event: Event                                                  |
-|                                                                  |
-|  + ToJson(): string                                              |
-|  + FromJson(json: string): Rule                                  |
-|                                                                  |
-+------------------+-----------------------------------------------+
-                   |
-                   | Contains
-                   v
-+------------------------------------------------------------------+
-|                                                                  |
-|  TopLevelCondition                                               |
-|                                                                  |
-|  - BooleanOperator: string ("all" or "any")                      |
-|  - Conditions: List<Condition>                                   |
-|                                                                  |
-|  + Evaluate(almanac: Almanac, operatorMap: OperatorMap): Task<bool> |
-|                                                                  |
-+------------------+-----------------------------------------------+
-                   |
-                   | Contains
-                   v
-+------------------------------------------------------------------+
-|                                                                  |
-|  Condition                                                       |
-|                                                                  |
-|  - Fact: string                                                  |
-|  - Operator: string                                              |
-|  - Value: object                                                 |
-|  - Path: string                                                  |
-|                                                                  |
-|  + Evaluate(almanac: Almanac, operatorMap: OperatorMap): Task<bool> |
-|                                                                  |
-+------------------------------------------------------------------+
+```mermaid
+classDiagram
+    class Engine {
+        +List~Rule~ Rules
+        +Dictionary~string, Fact~ Facts
+        +OperatorMap OperatorMap
+        +Dictionary~string, TopLevelCondition~ Conditions
+        +AddRule(rule: Rule) void
+        +UpdateRule(rule: Rule) void
+        +RemoveRule(rule: Rule) bool
+        +AddFact(id: string, definitionFunc: Func) void
+        +RemoveFact(id: string) bool
+        +AddOperator(name: string, evaluateFunc: Func) void
+        +Run(facts: Dictionary~string, object~) Task~EngineResult~
+    }
 
-+------------------------------------------------------------------+
-|                                                                  |
-|  Almanac                                                         |
-|                                                                  |
-|  - Facts: Dictionary<string, Fact>                               |
-|  - FactCache: Dictionary<string, object>                         |
-|  - PathResolver: IPathResolver                                   |
-|                                                                  |
-|  + FactValue(factId: string, params: Dictionary<string, object>): Task<object> |
-|  + AddRuntimeFact(factId: string, value: object): void           |
-|  + AddFact(id: string, valueCallback: Func<...>): void           |
-|                                                                  |
-+------------------+-----------------------------------------------+
-                   |
-                   | Uses
-                   v
-+------------------------------------------------------------------+
-|                                                                  |
-|  Fact                                                            |
-|                                                                  |
-|  - Id: string                                                    |
-|  - ValueCallback: Func<Dictionary<string, object>, Almanac, Task<object>> |
-|  - Options: FactOptions                                          |
-|                                                                  |
-+------------------------------------------------------------------+
+    class Rule {
+        +string Id
+        +int Priority
+        +TopLevelCondition Conditions
+        +Event Event
+        +ToJson() string
+        +FromJson(json: string) Rule
+    }
 
-+------------------------------------------------------------------+
-|                                                                  |
-|  OperatorMap                                                     |
-|                                                                  |
-|  - Operators: Dictionary<string, Func<object, object, bool>>     |
-|  - OperatorDecorators: Dictionary<string, Func<...>>             |
-|                                                                  |
-|  + AddOperator(name: string, evaluateFunc: Func<...>): void      |
-|  + RemoveOperator(name: string): bool                            |
-|  + GetOperator(name: string): Func<object, object, bool>         |
-|                                                                  |
-+------------------------------------------------------------------+
+    class TopLevelCondition {
+        +string BooleanOperator
+        +List~Condition~ Conditions
+        +Evaluate(almanac: Almanac, operatorMap: OperatorMap) Task~bool~
+    }
 
-+------------------------------------------------------------------+
-|                                                                  |
-|  Event                                                           |
-|                                                                  |
-|  - Type: string                                                  |
-|  - Params: Dictionary<string, object>                            |
-|                                                                  |
-+------------------------------------------------------------------+
+    class Condition {
+        +string Fact
+        +string Operator
+        +object Value
+        +string Path
+        +Evaluate(almanac: Almanac, operatorMap: OperatorMap) Task~bool~
+    }
+
+    class Almanac {
+        +Dictionary~string, Fact~ Facts
+        +Dictionary~string, object~ FactCache
+        +IPathResolver PathResolver
+        +FactValue(factId: string, params: Dictionary) Task~object~
+        +AddRuntimeFact(factId: string, value: object) void
+        +AddFact(id: string, valueCallback: Func) void
+    }
+
+    class Fact {
+        +string Id
+        +Func ValueCallback
+        +FactOptions Options
+    }
+
+    class OperatorMap {
+        +Dictionary~string, Func~ Operators
+        +Dictionary~string, Func~ OperatorDecorators
+        +AddOperator(name: string, evaluateFunc: Func) void
+        +RemoveOperator(name: string) bool
+        +GetOperator(name: string) Func
+    }
+
+    class Event {
+        +string Type
+        +Dictionary~string, object~ Params
+    }
+
+    Engine --> Rule
+    Rule --> TopLevelCondition
+    TopLevelCondition --> Condition
+    Engine --> Almanac
+    Almanac --> Fact
+    Engine --> OperatorMap
+    Rule --> Event
 ```
 
 ## Relationships
