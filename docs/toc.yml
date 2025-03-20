@@ -1,6 +1,8 @@
 - name: Home
-  href: ../index.md
+  href: index.md
 - name: Articles
-  href: ../articles/toc.yml
+  href: articles/
+  homepage: articles/quickstart.md
 - name: API Documentation
-  href: ../api/toc.yml
+  href: api/
+  homepage: api/index.md
