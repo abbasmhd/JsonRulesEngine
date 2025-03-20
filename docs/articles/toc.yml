@@ -1,4 +1,6 @@
 - name: Quick Start
   href: quickstart.md
+- name: Architecture
+  href: architecture.md
 - name: C4 Model
   href: c4_model.md
