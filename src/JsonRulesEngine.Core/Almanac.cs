@@ -16,13 +16,13 @@ namespace JsonRulesEngine.Core
         private readonly Dictionary<string, object> _factValues;
         private readonly Dictionary<string, object> _runtimeFacts;
         private readonly AlmanacOptions _options;
-        
+
         /// <summary>
         /// Initializes a new instance of the Almanac class
         /// </summary>
         /// <param name="facts">The facts to include in the almanac</param>
         /// <param name="options">The options for the almanac</param>
-        public Almanac(IEnumerable<Fact> facts = null, AlmanacOptions options = null)
+        public Almanac(IEnumerable<Fact>? facts = null, AlmanacOptions? options = null)
         {
             _facts = facts?.ToDictionary(f => f.Id) ?? new Dictionary<string, Fact>();
             _factValues = new Dictionary<string, object>();
@@ -33,28 +33,28 @@ namespace JsonRulesEngine.Core
                 PathResolver = new JsonPathResolver()
             };
         }
-        
+
         /// <summary>
         /// Gets the value of a fact
         /// </summary>
         /// <param name="factId">The ID of the fact</param>
         /// <param name="params">Optional parameters to pass to the fact</param>
         /// <returns>The fact value</returns>
-        public async Task<object> FactValue(string factId, IDictionary<string, object> @params = null)
+        public async Task<object> FactValue(string factId, IDictionary<string, object>? @params = null)
         {
             // Check runtime facts first
             if (_runtimeFacts.TryGetValue(factId, out var runtimeValue))
                 return runtimeValue;
-                
+
             // Check if fact exists
             if (!_facts.TryGetValue(factId, out var fact))
             {
                 if (_options.AllowUndefinedFacts)
-                    return null;
-                    
+                    return null!;
+
                 throw new KeyNotFoundException($"Fact '{factId}' not found in almanac");
             }
-            
+
             // Check cache if enabled
             string cacheKey = factId;
             if (@params != null && @params.Count > 0)
@@ -63,20 +63,22 @@ namespace JsonRulesEngine.Core
                 var sortedParams = new SortedDictionary<string, object>(@params);
                 cacheKey = $"{factId}:{string.Join(",", sortedParams.Select(p => $"{p.Key}={p.Value}"))}";
             }
-            
+
             if (fact.Options.Cache && _factValues.TryGetValue(cacheKey, out var cachedValue))
                 return cachedValue;
-                
+
             // Evaluate fact
             var value = await fact.ValueCallback(@params ?? new Dictionary<string, object>(), this);
-            
+
             // Cache if enabled
             if (fact.Options.Cache)
+            {
                 _factValues[cacheKey] = value;
-                
+            }
+
             return value;
         }
-        
+
         /// <summary>
         /// Adds a runtime fact
         /// </summary>
@@ -86,16 +88,18 @@ namespace JsonRulesEngine.Core
         {
             _runtimeFacts[factId] = value;
         }
-        
+
         /// <summary>
         /// Adds a fact to the almanac
         /// </summary>
         /// <param name="fact">The fact to add</param>
-        public void AddFact(Fact fact)
+        public void AddFact(Fact? fact)
         {
             if (fact == null)
+            {
                 throw new ArgumentNullException(nameof(fact));
-                
+            }
+
             _facts[fact.Id] = fact;
         }
     }

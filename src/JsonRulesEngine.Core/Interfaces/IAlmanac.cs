@@ -14,7 +14,7 @@ namespace JsonRulesEngine.Core.Interfaces
         /// <param name="factId">The ID of the fact</param>
         /// <param name="params">Optional parameters to pass to the fact</param>
         /// <returns>The fact value</returns>
-        Task<object> FactValue(string factId, IDictionary<string, object> @params = null);
+        Task<object> FactValue(string factId, IDictionary<string, object>? @params = null);
         
         /// <summary>
         /// Adds a runtime fact

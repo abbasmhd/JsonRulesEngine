@@ -14,7 +14,7 @@ namespace JsonRulesEngine.Tests
         public async Task ValueCallback_ReturnsCorrectValue()
         {
             // Arrange
-            var fact = new Fact("testFact", (_, __) => Task.FromResult<object>("testValue"));
+            var fact = new Fact("testFact", (_, _) => Task.FromResult<object>("testValue"));
             
             // Act
             var result = await fact.ValueCallback(new Dictionary<string, object>(), null!);
@@ -72,7 +72,7 @@ namespace JsonRulesEngine.Tests
         public void Constructor_WithNullId_ThrowsArgumentNullException()
         {
             // Arrange & Act & Assert
-            Assert.Throws<ArgumentNullException>(() => new Fact(null!, (_, __) => Task.FromResult<object>("testValue")));
+            Assert.Throws<ArgumentNullException>(() => new Fact(null!, (_, _) => Task.FromResult<object>("testValue")));
         }
         
         [Fact]
@@ -89,7 +89,7 @@ namespace JsonRulesEngine.Tests
             var options = new FactOptions { Cache = false, Priority = 2 };
             
             // Act
-            var fact = new Fact("testFact", (_, __) => Task.FromResult<object>("testValue"), options);
+            var fact = new Fact("testFact", (_, _) => Task.FromResult<object>("testValue"), options);
             
             // Assert
             Assert.Equal("testFact", fact.Id);
@@ -103,7 +103,7 @@ namespace JsonRulesEngine.Tests
         public void Constructor_WithNullOptions_CreatesDefaultOptions()
         {
             // Arrange & Act
-            var fact = new Fact("testFact", (_, __) => Task.FromResult<object>("testValue"));
+            var fact = new Fact("testFact", (_, _) => Task.FromResult<object>("testValue"));
             
             // Assert
             Assert.NotNull(fact.Options);

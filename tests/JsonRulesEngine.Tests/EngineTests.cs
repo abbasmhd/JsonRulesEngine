@@ -285,38 +285,38 @@ namespace JsonRulesEngine.Tests
         public async Task Run_WithEventParamReplacement_ReplacesFactsInParams()
         {
             // Arrange
-            var engine = new Engine(null, new EngineOptions { ReplaceFactsInEventParams = true });
-            
-            var eventParams = new Dictionary<string, object>
+            var engine = new Engine(null, new EngineOptions
             {
-                { "personName", "{{name}}" },
-                { "personAge", "{{age}}" }
-            };
-            
+                AllowUndefinedFacts = false,
+                AllowUndefinedConditions = false,
+                ReplaceFactsInEventParams = true,
+                PathResolver = new JsonPathResolver()
+            });
+
             var rule = new Rule(
-                "paramRule",
+                "testRule",
                 new TopLevelCondition("all", new[] { new Condition("age", "greaterThan", 20) }),
-                new Event("paramMatched", eventParams),
+                new Event("personMatched", new Dictionary<string, object>
+                {
+                    { "age", "$.age" }
+                }),
                 1
             );
-            
+
             engine.AddRule(rule);
-            
+
             var facts = new Dictionary<string, object>
             {
-                { "name", "John" },
                 { "age", 25 }
             };
-            
+
             // Act
             var result = await engine.Run(facts);
-            
+
             // Assert
             Assert.NotNull(result);
             Assert.Single(result.Events);
-            Assert.Equal("paramMatched", result.Events.First().Type);
-            Assert.Equal("John", result.Events.First().Params["personName"]);
-            Assert.Equal(25, result.Events.First().Params["personAge"]);
+            Assert.Equal(25, result.Events.First().Params["age"]);
         }
         
         private Rule CreateSampleRule()

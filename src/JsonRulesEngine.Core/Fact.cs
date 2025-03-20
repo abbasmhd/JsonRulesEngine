@@ -32,7 +32,7 @@ namespace JsonRulesEngine.Core
         /// <param name="id">The ID of the fact</param>
         /// <param name="valueCallback">The value callback function</param>
         /// <param name="options">The options for the fact</param>
-        public Fact(string id, Func<IDictionary<string, object>, IAlmanac, Task<object>> valueCallback, FactOptions options = null)
+        public Fact(string id, Func<IDictionary<string, object>, IAlmanac, Task<object>> valueCallback, FactOptions? options = null)
         {
             Id = id ?? throw new ArgumentNullException(nameof(id));
             ValueCallback = valueCallback ?? throw new ArgumentNullException(nameof(valueCallback));
@@ -46,7 +46,7 @@ namespace JsonRulesEngine.Core
         /// <param name="value">The static value</param>
         /// <param name="options">The options for the fact</param>
         /// <returns>A new fact with a static value</returns>
-        public static Fact Create(string id, object value, FactOptions options = null)
+        public static Fact Create(string id, object value, FactOptions? options = null)
         {
             return new Fact(id, (_, __) => Task.FromResult(value), options);
         }

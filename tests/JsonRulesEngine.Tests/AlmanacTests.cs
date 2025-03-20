@@ -27,8 +27,11 @@ namespace JsonRulesEngine.Tests
         public async Task FactValue_WithNonExistingFactAndAllowUndefinedFacts_ReturnsNull()
         {
             // Arrange
-            var options = new AlmanacOptions { AllowUndefinedFacts = true };
-            var almanac = new Almanac(null, options);
+            var options = new AlmanacOptions { 
+                AllowUndefinedFacts = true,
+                PathResolver = new JsonPathResolver()
+            };
+            var almanac = new Almanac([], options);
             
             // Act
             var result = await almanac.FactValue("nonExistingFact");
@@ -41,8 +44,11 @@ namespace JsonRulesEngine.Tests
         public async Task FactValue_WithNonExistingFactAndNotAllowUndefinedFacts_ThrowsKeyNotFoundException()
         {
             // Arrange
-            var options = new AlmanacOptions { AllowUndefinedFacts = false };
-            var almanac = new Almanac(null, options);
+            var options = new AlmanacOptions { 
+                AllowUndefinedFacts = false,
+                PathResolver = new JsonPathResolver()
+            };
+            var almanac = new Almanac([], options);
             
             // Act & Assert
             await Assert.ThrowsAsync<KeyNotFoundException>(() => almanac.FactValue("nonExistingFact"));
@@ -153,7 +159,7 @@ namespace JsonRulesEngine.Tests
             var almanac = new Almanac();
             
             // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => almanac.AddFact(null));
+            Assert.Throws<ArgumentNullException>(() => almanac.AddFact(null!));
         }
         
         [Fact]

@@ -21,7 +21,7 @@ namespace JsonRulesEngine.Core.Operators
         /// <param name="factValue">The fact value</param>
         /// <param name="compareToValue">The value to compare against</param>
         /// <returns>True if the condition is satisfied, false otherwise</returns>
-        public abstract bool Evaluate(object factValue, object compareToValue);
+        public abstract bool Evaluate(object? factValue, object? compareToValue);
     }
     
     /// <summary>
@@ -33,7 +33,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "equal";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null && compareToValue == null)
                 return true;
@@ -44,7 +44,7 @@ namespace JsonRulesEngine.Core.Operators
             return factValue.Equals(compareToValue);
         }
         
-        bool IOperator<object, object>.Evaluate(object factValue, object compareToValue)
+        bool IOperator<object, object>.Evaluate(object? factValue, object? compareToValue)
         {
             return Evaluate(factValue, compareToValue);
         }
@@ -59,7 +59,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "notEqual";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null && compareToValue == null)
                 return false;
@@ -70,7 +70,7 @@ namespace JsonRulesEngine.Core.Operators
             return !factValue.Equals(compareToValue);
         }
         
-        bool IOperator<object, object>.Evaluate(object factValue, object compareToValue)
+        bool IOperator<object, object>.Evaluate(object? factValue, object? compareToValue)
         {
             return Evaluate(factValue, compareToValue);
         }
@@ -85,7 +85,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "greaterThan";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return false;
@@ -114,7 +114,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "greaterThanInclusive";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return false;
@@ -143,7 +143,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "lessThan";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return false;
@@ -172,7 +172,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "lessThanInclusive";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return false;
@@ -201,7 +201,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "in";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return false;
@@ -212,7 +212,7 @@ namespace JsonRulesEngine.Core.Operators
             return false;
         }
         
-        bool IOperator<object, IEnumerable<object>>.Evaluate(object factValue, IEnumerable<object> compareToValue)
+        bool IOperator<object, IEnumerable<object>>.Evaluate(object? factValue, IEnumerable<object> compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return false;
@@ -230,7 +230,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "notIn";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return true;
@@ -241,7 +241,7 @@ namespace JsonRulesEngine.Core.Operators
             return true;
         }
         
-        bool IOperator<object, IEnumerable<object>>.Evaluate(object factValue, IEnumerable<object> compareToValue)
+        bool IOperator<object, IEnumerable<object>>.Evaluate(object? factValue, IEnumerable<object> compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return true;
@@ -259,7 +259,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "contains";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return false;
@@ -270,7 +270,7 @@ namespace JsonRulesEngine.Core.Operators
             return false;
         }
         
-        bool IOperator<IEnumerable<object>, object>.Evaluate(IEnumerable<object> factValue, object compareToValue)
+        bool IOperator<IEnumerable<object>, object>.Evaluate(IEnumerable<object> factValue, object? compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return false;
@@ -288,7 +288,7 @@ namespace JsonRulesEngine.Core.Operators
         public override string Name => "doesNotContain";
         
         /// <inheritdoc/>
-        public override bool Evaluate(object factValue, object compareToValue)
+        public override bool Evaluate(object? factValue, object? compareToValue)
         {
             if (factValue == null)
                 return true;
@@ -302,7 +302,7 @@ namespace JsonRulesEngine.Core.Operators
             return true;
         }
         
-        bool IOperator<IEnumerable<object>, object>.Evaluate(IEnumerable<object> factValue, object compareToValue)
+        bool IOperator<IEnumerable<object>, object>.Evaluate(IEnumerable<object> factValue, object? compareToValue)
         {
             if (factValue == null || compareToValue == null)
                 return true;

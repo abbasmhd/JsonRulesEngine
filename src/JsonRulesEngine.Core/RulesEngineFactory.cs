@@ -16,7 +16,7 @@ namespace JsonRulesEngine.Core
         /// <param name="rules">The rules to add to the engine</param>
         /// <param name="options">The options for the engine</param>
         /// <returns>A new engine instance</returns>
-        public static Engine CreateEngine(IEnumerable<Rule> rules = null, EngineOptions options = null)
+        public static Engine CreateEngine(IEnumerable<Rule>? rules = null, EngineOptions? options = null)
         {
             return new Engine(rules, options);
         }
@@ -53,7 +53,7 @@ namespace JsonRulesEngine.Core
         /// <param name="value">The value to compare against</param>
         /// <param name="path">The path to resolve within the fact object</param>
         /// <returns>A new condition instance</returns>
-        public static Condition CreateCondition(string fact, string @operator, object value, string path = null)
+        public static Condition CreateCondition(string fact, string @operator, object value, string? path = null)
         {
             return new Condition(fact, @operator, value, path);
         }
@@ -64,7 +64,7 @@ namespace JsonRulesEngine.Core
         /// <param name="type">The type of the event</param>
         /// <param name="params">The parameters of the event</param>
         /// <returns>A new event instance</returns>
-        public static Event CreateEvent(string type, IDictionary<string, object> @params = null)
+        public static Event CreateEvent(string type, IDictionary<string, object>? @params = null)
         {
             return new Event(type, @params);
         }
@@ -76,7 +76,7 @@ namespace JsonRulesEngine.Core
         /// <param name="value">The static value</param>
         /// <param name="options">The options for the fact</param>
         /// <returns>A new fact instance</returns>
-        public static Fact CreateFact(string id, object value, FactOptions options = null)
+        public static Fact CreateFact(string id, object value, FactOptions? options = null)
         {
             return Fact.Create(id, value, options);
         }
@@ -88,7 +88,7 @@ namespace JsonRulesEngine.Core
         /// <param name="valueCallback">The value callback function</param>
         /// <param name="options">The options for the fact</param>
         /// <returns>A new fact instance</returns>
-        public static Fact CreateDynamicFact(string id, Func<IDictionary<string, object>, Interfaces.IAlmanac, Task<object>> valueCallback, FactOptions options = null)
+        public static Fact CreateDynamicFact(string id, Func<IDictionary<string, object>, Interfaces.IAlmanac, Task<object>> valueCallback, FactOptions? options = null)
         {
             return new Fact(id, valueCallback, options);
         }

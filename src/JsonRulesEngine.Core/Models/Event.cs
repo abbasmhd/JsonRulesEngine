@@ -22,7 +22,7 @@ namespace JsonRulesEngine.Core.Models
         /// </summary>
         /// <param name="type">The type of the event</param>
         /// <param name="params">The parameters of the event</param>
-        public Event(string type, IDictionary<string, object> @params = null)
+        public Event(string type, IDictionary<string, object>? @params = null)
         {
             Type = type;
             Params = @params ?? new Dictionary<string, object>();

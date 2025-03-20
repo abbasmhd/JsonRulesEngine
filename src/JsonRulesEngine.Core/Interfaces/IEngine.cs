@@ -40,7 +40,7 @@ namespace JsonRulesEngine.Core.Interfaces
         /// <param name="facts">The facts to evaluate rules against</param>
         /// <param name="options">Optional run options</param>
         /// <returns>The engine result</returns>
-        Task<Models.EngineResult> Run(IDictionary<string, object> facts = null, Models.RunOptions options = null);
+        Task<Models.EngineResult> Run(IDictionary<string, object>? facts = null, Models.RunOptions? options = null);
         
         /// <summary>
         /// Stops the engine

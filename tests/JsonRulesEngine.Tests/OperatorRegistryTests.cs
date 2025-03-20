@@ -108,7 +108,7 @@ namespace JsonRulesEngine.Tests
         {
             public override string Name => "customTest";
             
-            public override bool Evaluate(object factValue, object compareToValue)
+            public override bool Evaluate(object? factValue, object? compareToValue)
             {
                 return true;
             }

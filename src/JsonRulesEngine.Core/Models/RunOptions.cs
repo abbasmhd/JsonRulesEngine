@@ -12,6 +12,6 @@ namespace JsonRulesEngine.Core.Models
         /// <summary>
         /// Gets or sets the almanac to use during rule evaluation
         /// </summary>
-        public Interfaces.IAlmanac Almanac { get; set; }
+        public Interfaces.IAlmanac? Almanac { get; set; }
     }
 }

@@ -16,8 +16,8 @@ namespace JsonRulesEngine.Core
         /// </summary>
         /// <param name="fact">The fact object</param>
         /// <param name="path">The JSON path to resolve</param>
-        /// <returns>The resolved value</returns>
-        public object ResolveValue(object fact, string path)
+        /// <returns>The resolved value, or null if the path cannot be resolved</returns>
+        public object? ResolveValue(object? fact, string path)
         {
             if (fact == null)
                 return null;
@@ -29,10 +29,10 @@ namespace JsonRulesEngine.Core
             // Format: $.property.subproperty
             if (path.StartsWith("$."))
             {
-                path = path.Substring(2);
+                path = path[2..];
                 string[] parts = path.Split('.');
                 
-                object current = fact;
+                object? current = fact;
                 foreach (var part in parts)
                 {
                     if (current == null)

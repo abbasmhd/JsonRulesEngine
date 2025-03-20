@@ -64,7 +64,8 @@ namespace JsonRulesEngine.Core.Models
         /// <returns>The deserialized rule</returns>
         public static Rule FromJson(string json)
         {
-            return JsonSerializer.Deserialize<Rule>(json);
+            var rule = JsonSerializer.Deserialize<Rule>(json);
+            return rule ?? throw new JsonException("Failed to deserialize rule from JSON");
         }
     }
 }

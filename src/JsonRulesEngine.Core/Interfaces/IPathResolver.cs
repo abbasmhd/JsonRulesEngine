@@ -12,7 +12,7 @@ namespace JsonRulesEngine.Core.Interfaces
         /// </summary>
         /// <param name="fact">The fact object</param>
         /// <param name="path">The path to resolve</param>
-        /// <returns>The resolved value</returns>
-        object ResolveValue(object fact, string path);
+        /// <returns>The resolved value, or null if the path cannot be resolved</returns>
+        object? ResolveValue(object? fact, string path);
     }
 }

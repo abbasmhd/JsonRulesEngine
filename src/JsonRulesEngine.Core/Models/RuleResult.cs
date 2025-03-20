@@ -20,7 +20,7 @@ namespace JsonRulesEngine.Core.Models
         /// <summary>
         /// Gets the event that was triggered (if any)
         /// </summary>
-        public Event Event { get; }
+        public Event? Event { get; }
         
         /// <summary>
         /// Initializes a new instance of the RuleResult class
@@ -28,7 +28,7 @@ namespace JsonRulesEngine.Core.Models
         /// <param name="rule">The rule that was evaluated</param>
         /// <param name="result">Whether the rule's conditions were met</param>
         /// <param name="event">The event that was triggered (if any)</param>
-        public RuleResult(Rule rule, bool result, Event @event = null)
+        public RuleResult(Rule rule, bool result, Event? @event = null)
         {
             Rule = rule;
             Result = result;

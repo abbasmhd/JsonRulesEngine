@@ -27,7 +27,7 @@ namespace JsonRulesEngine.Core.Models
         /// <summary>
         /// Gets the path to resolve within the fact object
         /// </summary>
-        public string Path { get; }
+        public string? Path { get; }
         
         /// <summary>
         /// Initializes a new instance of the Condition class
@@ -36,7 +36,7 @@ namespace JsonRulesEngine.Core.Models
         /// <param name="operator">The operator name</param>
         /// <param name="value">The value to compare against</param>
         /// <param name="path">The path to resolve within the fact object</param>
-        public Condition(string fact, string @operator, object value, string path = null)
+        public Condition(string fact, string @operator, object value, string? path = null)
         {
             Fact = fact ?? throw new ArgumentNullException(nameof(fact));
             Operator = @operator ?? throw new ArgumentNullException(nameof(@operator));

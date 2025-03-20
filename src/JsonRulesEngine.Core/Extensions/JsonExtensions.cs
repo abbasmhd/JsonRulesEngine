@@ -35,9 +35,10 @@ namespace JsonRulesEngine.Core.Extensions
         /// <typeparam name="T">The type of the object</typeparam>
         /// <param name="json">The JSON to deserialize</param>
         /// <returns>The deserialized object</returns>
-        public static T FromJson<T>(this string json)
+        public static T FromJson<T>(this string json) where T : notnull
         {
-            return JsonSerializer.Deserialize<T>(json, _options);
+            var result = JsonSerializer.Deserialize<T>(json, _options);
+            return result ?? throw new JsonException($"Failed to deserialize JSON to type {typeof(T).Name}");
         }
 
         /// <summary>

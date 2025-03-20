@@ -40,7 +40,7 @@ namespace JsonRulesEngine.Tests
             var op = new EqualOperator();
             
             // Act
-            var result = op.Evaluate(null, null);
+            var result = op.Evaluate(null!, null!);
             
             // Assert
             Assert.True(result);
@@ -53,8 +53,8 @@ namespace JsonRulesEngine.Tests
             var op = new EqualOperator();
             
             // Act
-            var result1 = op.Evaluate("test", null);
-            var result2 = op.Evaluate(null, "test");
+            var result1 = op.Evaluate("test", null!);
+            var result2 = op.Evaluate(null!, "test");
             
             // Assert
             Assert.False(result1);

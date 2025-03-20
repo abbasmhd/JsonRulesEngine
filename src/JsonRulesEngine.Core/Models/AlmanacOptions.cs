@@ -13,6 +13,6 @@ namespace JsonRulesEngine.Core.Models
         /// <summary>
         /// Gets or sets the path resolver
         /// </summary>
-        public Interfaces.IPathResolver PathResolver { get; set; }
+        public required Interfaces.IPathResolver PathResolver { get; set; }
     }
 }
