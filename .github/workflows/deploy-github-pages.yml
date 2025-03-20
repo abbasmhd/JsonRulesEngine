@@ -23,7 +23,7 @@ jobs:
     - name: Build Documentation
       run: |
         mkdir -p docs/api
-        docfx init -q -o docs
+        docfx init -o docs
         docfx docs/docfx.json
         
     - name: Deploy to GitHub Pages
