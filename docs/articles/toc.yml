@@ -1,6 +1,10 @@
 - name: Quick Start
   href: quickstart.md
-- name: Architecture
-  href: architecture.md
+- name: Operators Guide
+  href: operators.md
+- name: Advanced Usage
+  href: advanced.md
+- name: Troubleshooting
+  href: troubleshooting.md
 - name: C4 Model
   href: c4_model.md

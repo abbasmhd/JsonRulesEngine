@@ -92,6 +92,9 @@ items:
   - uid: JsonRulesEngine.Core.Operators.DoesNotContainOperator
     name: DoesNotContainOperator
     type: Class
+  - uid: JsonRulesEngine.Core.Operators.EndsWithOperator
+    name: EndsWithOperator
+    type: Class
   - uid: JsonRulesEngine.Core.Operators.EqualOperator
     name: EqualOperator
     type: Class
@@ -110,6 +113,9 @@ items:
   - uid: JsonRulesEngine.Core.Operators.LessThanOrEqualOperator
     name: LessThanOrEqualOperator
     type: Class
+  - uid: JsonRulesEngine.Core.Operators.MatchesOperator
+    name: MatchesOperator
+    type: Class
   - uid: JsonRulesEngine.Core.Operators.NotEqualOperator
     name: NotEqualOperator
     type: Class
@@ -118,5 +124,11 @@ items:
     type: Class
   - uid: JsonRulesEngine.Core.Operators.Operator
     name: Operator
+    type: Class
+  - uid: JsonRulesEngine.Core.Operators.StartsWithOperator
+    name: StartsWithOperator
+    type: Class
+  - uid: JsonRulesEngine.Core.Operators.StringContainsOperator
+    name: StringContainsOperator
     type: Class
 memberLayout: SamePage

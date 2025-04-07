@@ -118,6 +118,7 @@ namespace JsonRulesEngine.Core
                 var almanac = options?.Almanac ?? new Almanac(null, new AlmanacOptions
                 {
                     AllowUndefinedFacts = _options.AllowUndefinedFacts,
+                    EnableFactCaching = _options.EnableFactCaching,
                     PathResolver = _options.PathResolver
                 });
 

@@ -310,4 +310,176 @@ namespace JsonRulesEngine.Core.Operators
             return !factValue.Contains(compareToValue);
         }
     }
+    
+    /// <summary>
+    /// Starts with operator (checks if a string starts with another string)
+    /// </summary>
+    public class StartsWithOperator : Operator, IOperator<string, string>
+    {
+        /// <inheritdoc/>
+        public override string Name => "startsWith";
+        
+        /// <summary>
+        /// Evaluates whether a string starts with the specified substring.
+        /// Uses <see cref="String.StartsWith(string, StringComparison)"/> with <see cref="StringComparison.Ordinal"/> comparison.
+        /// </summary>
+        /// <param name="factValue">The fact value (string to check)</param>
+        /// <param name="compareToValue">The substring to check for at the start of the string</param>
+        /// <returns>
+        /// True if <paramref name="factValue"/> starts with <paramref name="compareToValue"/>;
+        /// False if either value is null or if the fact value doesn't start with the comparison value.
+        /// Returns true if both strings are empty or if comparison value is empty.
+        /// </returns>
+        public override bool Evaluate(object? factValue, object? compareToValue)
+        {
+            if (factValue == null || compareToValue == null)
+                return false;
+                
+            if (factValue is string factString && compareToValue is string compareString)
+                return factString.StartsWith(compareString, StringComparison.Ordinal);
+                
+            return false;
+        }
+        
+        bool IOperator<string, string>.Evaluate(string factValue, string compareToValue)
+        {
+            if (factValue == null || compareToValue == null)
+                return false;
+                
+            return factValue.StartsWith(compareToValue, StringComparison.Ordinal);
+        }
+    }
+    
+    /// <summary>
+    /// Ends with operator (checks if a string ends with another string)
+    /// </summary>
+    public class EndsWithOperator : Operator, IOperator<string, string>
+    {
+        /// <inheritdoc/>
+        public override string Name => "endsWith";
+        
+        /// <summary>
+        /// Evaluates whether a string ends with the specified substring.
+        /// Uses <see cref="String.EndsWith(string, StringComparison)"/> with <see cref="StringComparison.Ordinal"/> comparison.
+        /// </summary>
+        /// <param name="factValue">The fact value (string to check)</param>
+        /// <param name="compareToValue">The substring to check for at the end of the string</param>
+        /// <returns>
+        /// True if <paramref name="factValue"/> ends with <paramref name="compareToValue"/>;
+        /// False if either value is null or if the fact value doesn't end with the comparison value.
+        /// Returns true if both strings are empty or if comparison value is empty.
+        /// </returns>
+        public override bool Evaluate(object? factValue, object? compareToValue)
+        {
+            if (factValue == null || compareToValue == null)
+                return false;
+                
+            if (factValue is string factString && compareToValue is string compareString)
+                return factString.EndsWith(compareString, StringComparison.Ordinal);
+                
+            return false;
+        }
+        
+        bool IOperator<string, string>.Evaluate(string factValue, string compareToValue)
+        {
+            if (factValue == null || compareToValue == null)
+                return false;
+                
+            return factValue.EndsWith(compareToValue, StringComparison.Ordinal);
+        }
+    }
+    
+    /// <summary>
+    /// String contains operator (checks if a string contains another string)
+    /// </summary>
+    public class StringContainsOperator : Operator, IOperator<string, string>
+    {
+        /// <inheritdoc/>
+        public override string Name => "stringContains";
+        
+        /// <summary>
+        /// Evaluates whether a string contains the specified substring.
+        /// Uses <see cref="String.Contains(string, StringComparison)"/> with <see cref="StringComparison.Ordinal"/> comparison.
+        /// </summary>
+        /// <param name="factValue">The fact value (string to check)</param>
+        /// <param name="compareToValue">The substring to check for within the string</param>
+        /// <returns>
+        /// True if <paramref name="factValue"/> contains <paramref name="compareToValue"/>;
+        /// False if either value is null or if the fact value doesn't contain the comparison value.
+        /// Returns true if both strings are empty or if comparison value is empty.
+        /// </returns>
+        public override bool Evaluate(object? factValue, object? compareToValue)
+        {
+            if (factValue == null || compareToValue == null)
+                return false;
+                
+            if (factValue is string factString && compareToValue is string compareString)
+                return factString.Contains(compareString, StringComparison.Ordinal);
+                
+            return false;
+        }
+        
+        bool IOperator<string, string>.Evaluate(string factValue, string compareToValue)
+        {
+            if (factValue == null || compareToValue == null)
+                return false;
+                
+            return factValue.Contains(compareToValue, StringComparison.Ordinal);
+        }
+    }
+    
+    /// <summary>
+    /// Matches operator (checks if a string matches a regular expression)
+    /// </summary>
+    public class MatchesOperator : Operator, IOperator<string, string>
+    {
+        /// <inheritdoc/>
+        public override string Name => "matches";
+        
+        /// <summary>
+        /// Evaluates whether a string matches the specified regular expression pattern.
+        /// Uses <see cref="System.Text.RegularExpressions.Regex.IsMatch(string, string)"/> to perform the matching.
+        /// </summary>
+        /// <param name="factValue">The fact value (string to check)</param>
+        /// <param name="compareToValue">The regular expression pattern to match against</param>
+        /// <returns>
+        /// True if <paramref name="factValue"/> matches the pattern in <paramref name="compareToValue"/>;
+        /// False if either value is null, if the fact value doesn't match the pattern, or if the pattern is invalid.
+        /// Invalid regex patterns are handled gracefully (returns false instead of throwing an exception).
+        /// </returns>
+        public override bool Evaluate(object? factValue, object? compareToValue)
+        {
+            if (factValue == null || compareToValue == null)
+                return false;
+                
+            if (factValue is string factString && compareToValue is string pattern)
+            {
+                try 
+                {
+                    return System.Text.RegularExpressions.Regex.IsMatch(factString, pattern);
+                }
+                catch (System.Text.RegularExpressions.RegexParseException)
+                {
+                    return false;
+                }
+            }
+                
+            return false;
+        }
+        
+        bool IOperator<string, string>.Evaluate(string factValue, string compareToValue)
+        {
+            if (factValue == null || compareToValue == null)
+                return false;
+                
+            try 
+            {
+                return System.Text.RegularExpressions.Regex.IsMatch(factValue, compareToValue);
+            }
+            catch (System.Text.RegularExpressions.RegexParseException)
+            {
+                return false;
+            }
+        }
+    }
 }
