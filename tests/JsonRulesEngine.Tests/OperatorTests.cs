@@ -354,5 +354,230 @@ namespace JsonRulesEngine.Tests
             // Assert
             Assert.True(result);
         }
+        
+        [Fact]
+        public void StartsWithOperator_WithStringStartingWithValue_ReturnsTrue()
+        {
+            // Arrange
+            var op = new StartsWithOperator();
+            
+            // Act
+            var result = op.Evaluate("Hello World", "Hello");
+            
+            // Assert
+            Assert.True(result);
+        }
+        
+        [Fact]
+        public void StartsWithOperator_WithStringNotStartingWithValue_ReturnsFalse()
+        {
+            // Arrange
+            var op = new StartsWithOperator();
+            
+            // Act
+            var result = op.Evaluate("Hello World", "World");
+            
+            // Assert
+            Assert.False(result);
+        }
+        
+        [Fact]
+        public void StartsWithOperator_WithNullValues_ReturnsFalse()
+        {
+            // Arrange
+            var op = new StartsWithOperator();
+            
+            // Act
+            var result1 = op.Evaluate(null, "Hello");
+            var result2 = op.Evaluate("Hello", null);
+            
+            // Assert
+            Assert.False(result1);
+            Assert.False(result2);
+        }
+        
+        [Fact]
+        public void StartsWithOperator_WithEmptyString_HandlesCorrectly()
+        {
+            // Arrange
+            var op = new StartsWithOperator();
+            
+            // Act & Assert
+            Assert.True(op.Evaluate("Hello", ""));
+            Assert.True(op.Evaluate("", ""));
+            Assert.False(op.Evaluate("", "Hello"));
+        }
+        
+        [Fact]
+        public void EndsWithOperator_WithStringEndingWithValue_ReturnsTrue()
+        {
+            // Arrange
+            var op = new EndsWithOperator();
+            
+            // Act
+            var result = op.Evaluate("Hello World", "World");
+            
+            // Assert
+            Assert.True(result);
+        }
+        
+        [Fact]
+        public void EndsWithOperator_WithStringNotEndingWithValue_ReturnsFalse()
+        {
+            // Arrange
+            var op = new EndsWithOperator();
+            
+            // Act
+            var result = op.Evaluate("Hello World", "Hello");
+            
+            // Assert
+            Assert.False(result);
+        }
+        
+        [Fact]
+        public void EndsWithOperator_WithNullValues_ReturnsFalse()
+        {
+            // Arrange
+            var op = new EndsWithOperator();
+            
+            // Act
+            var result1 = op.Evaluate(null, "World");
+            var result2 = op.Evaluate("Hello World", null);
+            
+            // Assert
+            Assert.False(result1);
+            Assert.False(result2);
+        }
+        
+        [Fact]
+        public void EndsWithOperator_WithEmptyString_HandlesCorrectly()
+        {
+            // Arrange
+            var op = new EndsWithOperator();
+            
+            // Act & Assert
+            Assert.True(op.Evaluate("Hello", ""));
+            Assert.True(op.Evaluate("", ""));
+            Assert.False(op.Evaluate("", "Hello"));
+        }
+        
+        [Fact]
+        public void StringContainsOperator_WithStringContainingValue_ReturnsTrue()
+        {
+            // Arrange
+            var op = new StringContainsOperator();
+            
+            // Act
+            var result = op.Evaluate("Hello World", "o Wo");
+            
+            // Assert
+            Assert.True(result);
+        }
+        
+        [Fact]
+        public void StringContainsOperator_WithStringNotContainingValue_ReturnsFalse()
+        {
+            // Arrange
+            var op = new StringContainsOperator();
+            
+            // Act
+            var result = op.Evaluate("Hello World", "Goodbye");
+            
+            // Assert
+            Assert.False(result);
+        }
+        
+        [Fact]
+        public void StringContainsOperator_WithNullValues_ReturnsFalse()
+        {
+            // Arrange
+            var op = new StringContainsOperator();
+            
+            // Act
+            var result1 = op.Evaluate(null, "World");
+            var result2 = op.Evaluate("Hello World", null);
+            
+            // Assert
+            Assert.False(result1);
+            Assert.False(result2);
+        }
+        
+        [Fact]
+        public void StringContainsOperator_WithEmptyString_HandlesCorrectly()
+        {
+            // Arrange
+            var op = new StringContainsOperator();
+            
+            // Act & Assert
+            Assert.True(op.Evaluate("Hello", ""));
+            Assert.True(op.Evaluate("", ""));
+            Assert.False(op.Evaluate("", "Hello"));
+        }
+        
+        [Fact]
+        public void MatchesOperator_WithStringMatchingPattern_ReturnsTrue()
+        {
+            // Arrange
+            var op = new MatchesOperator();
+            
+            // Act
+            var result = op.Evaluate("Hello World", "Hello.*");
+            
+            // Assert
+            Assert.True(result);
+        }
+        
+        [Fact]
+        public void MatchesOperator_WithStringNotMatchingPattern_ReturnsFalse()
+        {
+            // Arrange
+            var op = new MatchesOperator();
+            
+            // Act
+            var result = op.Evaluate("Hello World", "^Goodbye.*");
+            
+            // Assert
+            Assert.False(result);
+        }
+        
+        [Fact]
+        public void MatchesOperator_WithNullValues_ReturnsFalse()
+        {
+            // Arrange
+            var op = new MatchesOperator();
+            
+            // Act
+            var result1 = op.Evaluate(null, ".*");
+            var result2 = op.Evaluate("Hello World", null);
+            
+            // Assert
+            Assert.False(result1);
+            Assert.False(result2);
+        }
+        
+        [Fact]
+        public void MatchesOperator_WithInvalidRegex_ReturnsFalse()
+        {
+            // Arrange
+            var op = new MatchesOperator();
+            
+            // Act
+            var result = op.Evaluate("Hello World", "["); // Invalid regex pattern
+            
+            // Assert
+            Assert.False(result);
+        }
+        
+        [Fact]
+        public void MatchesOperator_WithComplexRegex_MatchesCorrectly()
+        {
+            // Arrange
+            var op = new MatchesOperator();
+            
+            // Act & Assert
+            Assert.True(op.Evaluate("abc123", "^[a-z]+\\d+$"));
+            Assert.False(op.Evaluate("ABC123", "^[a-z]+\\d+$"));
+            Assert.True(op.Evaluate("test@example.com", "^[\\w.-]+@[\\w.-]+\\.\\w+$"));
+        }
     }
 }

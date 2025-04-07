@@ -23,6 +23,11 @@ namespace JsonRulesEngine.Core.Models
         public bool ReplaceFactsInEventParams { get; set; }
         
         /// <summary>
+        /// Gets or sets whether fact caching is enabled
+        /// </summary>
+        public bool EnableFactCaching { get; set; } = true;
+        
+        /// <summary>
         /// Gets or sets the path resolver
         /// </summary>
         public required Interfaces.IPathResolver PathResolver { get; set; }

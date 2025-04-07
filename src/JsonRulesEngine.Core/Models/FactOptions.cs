@@ -11,6 +11,11 @@ namespace JsonRulesEngine.Core.Models
         public bool Cache { get; set; } = true;
         
         /// <summary>
+        /// Gets or sets the cache expiration time in seconds (0 = no expiration)
+        /// </summary>
+        public int CacheExpirationInSeconds { get; set; } = 0;
+        
+        /// <summary>
         /// Gets or sets the priority of the fact (lower numbers are evaluated first)
         /// </summary>
         public int Priority { get; set; } = 1;

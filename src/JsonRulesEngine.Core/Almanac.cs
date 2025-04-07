@@ -13,7 +13,7 @@ namespace JsonRulesEngine.Core
     public class Almanac : IAlmanac
     {
         private readonly Dictionary<string, Fact> _facts;
-        private readonly Dictionary<string, object> _factValues;
+        private readonly Dictionary<string, CacheEntry> _factCache;
         private readonly Dictionary<string, object> _runtimeFacts;
         private readonly AlmanacOptions _options;
 
@@ -25,11 +25,13 @@ namespace JsonRulesEngine.Core
         public Almanac(IEnumerable<Fact>? facts = null, AlmanacOptions? options = null)
         {
             _facts = facts?.ToDictionary(f => f.Id) ?? new Dictionary<string, Fact>();
-            _factValues = new Dictionary<string, object>();
+            _factCache = new Dictionary<string, CacheEntry>();
             _runtimeFacts = new Dictionary<string, object>();
             _options = options ?? new AlmanacOptions
             {
                 AllowUndefinedFacts = false,
+                EnableFactCaching = true,
+                CacheMaxSize = 1000,
                 PathResolver = new JsonPathResolver()
             };
         }
@@ -55,25 +57,38 @@ namespace JsonRulesEngine.Core
                 throw new KeyNotFoundException($"Fact '{factId}' not found in almanac");
             }
 
-            // Check cache if enabled
-            string cacheKey = factId;
-            if (@params != null && @params.Count > 0)
-            {
-                // Create a cache key that includes parameters
-                var sortedParams = new SortedDictionary<string, object>(@params);
-                cacheKey = $"{factId}:{string.Join(",", sortedParams.Select(p => $"{p.Key}={p.Value}"))}";
-            }
+            // Create cache key
+            string cacheKey = CreateCacheKey(factId, @params);
 
-            if (fact.Options.Cache && _factValues.TryGetValue(cacheKey, out var cachedValue))
-                return cachedValue;
+            // Check cache if enabled
+            if (_options.EnableFactCaching && fact.Options.Cache && _factCache.TryGetValue(cacheKey, out var cachedEntry))
+            {
+                // Check if the cache entry has expired
+                if (!cachedEntry.IsExpired())
+                {
+                    return cachedEntry.Value;
+                }
+                
+                // Remove expired entry
+                _factCache.Remove(cacheKey);
+            }
 
             // Evaluate fact
             var value = await fact.ValueCallback(@params ?? new Dictionary<string, object>(), this);
 
             // Cache if enabled
-            if (fact.Options.Cache)
+            if (_options.EnableFactCaching && fact.Options.Cache)
             {
-                _factValues[cacheKey] = value;
+                // Check if we need to enforce cache size limit
+                if (_options.CacheMaxSize > 0 && _factCache.Count >= _options.CacheMaxSize)
+                {
+                    // Remove oldest entry (simple LRU implementation)
+                    var oldestKey = _factCache.OrderBy(kv => kv.Value.CreatedAt).First().Key;
+                    _factCache.Remove(oldestKey);
+                }
+                
+                // Add to cache
+                _factCache[cacheKey] = new CacheEntry(value, fact.Options.CacheExpirationInSeconds);
             }
 
             return value;
@@ -101,6 +116,46 @@ namespace JsonRulesEngine.Core
             }
 
             _facts[fact.Id] = fact;
+        }
+        
+        /// <summary>
+        /// Clears the fact cache
+        /// </summary>
+        public void ClearCache()
+        {
+            _factCache.Clear();
+        }
+        
+        /// <summary>
+        /// Invalidates the cache entry for a specific fact
+        /// </summary>
+        /// <param name="factId">The ID of the fact to invalidate</param>
+        public void InvalidateCache(string factId)
+        {
+            var keysToRemove = _factCache.Keys
+                .Where(key => key.StartsWith($"{factId}:") || key == factId)
+                .ToList();
+                
+            foreach (var key in keysToRemove)
+            {
+                _factCache.Remove(key);
+            }
+        }
+        
+        /// <summary>
+        /// Creates a cache key for a fact and parameters
+        /// </summary>
+        /// <param name="factId">The fact ID</param>
+        /// <param name="params">The parameters</param>
+        /// <returns>The cache key</returns>
+        private string CreateCacheKey(string factId, IDictionary<string, object>? @params)
+        {
+            if (@params == null || @params.Count == 0)
+                return factId;
+                
+            // Create a cache key that includes parameters
+            var sortedParams = new SortedDictionary<string, object>(@params);
+            return $"{factId}:{string.Join(",", sortedParams.Select(p => $"{p.Key}={p.Value}"))}";
         }
     }
 }

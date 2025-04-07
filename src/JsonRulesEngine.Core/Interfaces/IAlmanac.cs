@@ -22,5 +22,16 @@ namespace JsonRulesEngine.Core.Interfaces
         /// <param name="factId">The ID of the fact</param>
         /// <param name="value">The fact value</param>
         void AddRuntimeFact(string factId, object value);
+        
+        /// <summary>
+        /// Clears the fact cache
+        /// </summary>
+        void ClearCache();
+        
+        /// <summary>
+        /// Invalidates the cache entry for a specific fact
+        /// </summary>
+        /// <param name="factId">The ID of the fact to invalidate</param>
+        void InvalidateCache(string factId);
     }
 }

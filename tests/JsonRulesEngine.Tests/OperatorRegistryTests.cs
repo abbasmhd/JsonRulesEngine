@@ -50,7 +50,7 @@ namespace JsonRulesEngine.Tests
             var registry = new OperatorRegistry();
             
             // Act & Assert
-            Assert.Throws<KeyNotFoundException>(() => registry.GetOperator("invalidOperator"));
+            Assert.Throws<System.Collections.Generic.KeyNotFoundException>(() => registry.GetOperator("invalidOperator"));
         }
         
         [Fact]
@@ -100,7 +100,48 @@ namespace JsonRulesEngine.Tests
             
             // Assert
             Assert.NotNull(operators);
-            Assert.Equal(10, operators.Count()); // Default operators
+            Assert.Equal(14, operators.Count()); // Default operators + string operators
+        }
+        
+        [Fact]
+        public void DefaultRegistry_ContainsAllStandardOperators()
+        {
+            // Arrange
+            var registry = new OperatorRegistry();
+            
+            // Act
+            var operators = registry.GetAllOperators().ToList();
+            
+            // Assert
+            Assert.Contains(operators, op => op.Name == "equal");
+            Assert.Contains(operators, op => op.Name == "notEqual");
+            Assert.Contains(operators, op => op.Name == "greaterThan");
+            Assert.Contains(operators, op => op.Name == "greaterThanInclusive");
+            Assert.Contains(operators, op => op.Name == "lessThan");
+            Assert.Contains(operators, op => op.Name == "lessThanInclusive");
+            Assert.Contains(operators, op => op.Name == "in");
+            Assert.Contains(operators, op => op.Name == "notIn");
+            Assert.Contains(operators, op => op.Name == "contains");
+            Assert.Contains(operators, op => op.Name == "doesNotContain");
+            
+            // New string operators
+            Assert.Contains(operators, op => op.Name == "startsWith");
+            Assert.Contains(operators, op => op.Name == "endsWith");
+            Assert.Contains(operators, op => op.Name == "stringContains");
+            Assert.Contains(operators, op => op.Name == "matches");
+        }
+        
+        [Fact]
+        public void StringOperators_AreRegisteredCorrectly()
+        {
+            // Arrange
+            var registry = new OperatorRegistry();
+            
+            // Act & Assert
+            Assert.IsType<StartsWithOperator>(registry.GetOperator("startsWith"));
+            Assert.IsType<EndsWithOperator>(registry.GetOperator("endsWith"));
+            Assert.IsType<StringContainsOperator>(registry.GetOperator("stringContains"));
+            Assert.IsType<MatchesOperator>(registry.GetOperator("matches"));
         }
         
         // Custom operator for testing

@@ -29,7 +29,11 @@ namespace JsonRulesEngine.Core
                 { "in", new InOperator() },
                 { "notIn", new NotInOperator() },
                 { "contains", new ContainsOperator() },
-                { "doesNotContain", new DoesNotContainOperator() }
+                { "doesNotContain", new DoesNotContainOperator() },
+                { "startsWith", new StartsWithOperator() },
+                { "endsWith", new EndsWithOperator() },
+                { "stringContains", new StringContainsOperator() },
+                { "matches", new MatchesOperator() }
             };
         }
         
